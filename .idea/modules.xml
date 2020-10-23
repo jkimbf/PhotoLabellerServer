@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/model/model.iml" filepath="$PROJECT_DIR$/.idea/modules/model/model.iml" group="parameterserver/model" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/parameterserver.iml" filepath="$PROJECT_DIR$/.idea/modules/parameterserver.iml" group="parameterserver" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/server.iml" filepath="$PROJECT_DIR$/.idea/modules/server/server.iml" group="parameterserver/server" />
+    </modules>
+  </component>
+</project>
