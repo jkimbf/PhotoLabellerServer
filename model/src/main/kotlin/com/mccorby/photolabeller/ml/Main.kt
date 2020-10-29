@@ -22,7 +22,7 @@ fun main(args: Array<String>) {
         val numLabels = CifarLoader.NUM_LABELS
         val saveFile = "cifar_federated-${Date().time}.zip"
 
-        val numEpochs = 50
+        val numEpochs = 10
         val numSamples = 10000
 
         val config = SharedConfig(32, 3, 100)
@@ -35,8 +35,8 @@ fun main(args: Array<String>) {
             trainer.saveModel(model, args[1] + "/$saveFile")
         }
 
-        val eval = trainer.eval(model, numSamples)
-        println(eval.stats())
+        //val eval = trainer.eval(model, numSamples)
+        //println(eval.stats())
 
     } else {
         predict(args[0], args[1])
