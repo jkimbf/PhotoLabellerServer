@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/model/model.iml" filepath="$PROJECT_DIR$/.idea/modules/model/model.iml" group="parameterserver/model" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/parameterserver.iml" filepath="$PROJECT_DIR$/.idea/modules/parameterserver.iml" group="parameterserver" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/server.iml" filepath="$PROJECT_DIR$/.idea/modules/server/server.iml" group="parameterserver/server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/parameterserver.iml" filepath="$PROJECT_DIR$/.idea/modules/parameterserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/imported/parameterserver.imported.iml" filepath="$PROJECT_DIR$/.idea/modules/imported/parameterserver.imported.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/model/parameterserver.model.iml" filepath="$PROJECT_DIR$/.idea/modules/model/parameterserver.model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/parameterserver.server.iml" filepath="$PROJECT_DIR$/.idea/modules/server/parameterserver.server.iml" />
     </modules>
   </component>
 </project>
