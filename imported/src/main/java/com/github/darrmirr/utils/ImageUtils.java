@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -48,7 +49,7 @@ public class ImageUtils {
      * @throws IOException exception while file is saved
      */
     public boolean toFile(BufferedImage image, String imageFormat, String filePath) throws IOException {
-        var outputFile = Paths.get(filePath).toFile();
+        File outputFile = Paths.get(filePath).toFile();
         logger.info("save image to {}", outputFile.getAbsolutePath());
         return ImageIO.write(image, imageFormat, outputFile);
     }
@@ -72,8 +73,8 @@ public class ImageUtils {
      * @throws IOException during method execution
      */
     public INDArray drawBoundBox(List<BoundBox> bboxes, INDArray image) throws IOException {
-        var originalImage = toBufferedImage(image);
-        var g2D = originalImage.createGraphics();
+        BufferedImage originalImage = toBufferedImage(image);
+        Graphics2D g2D = originalImage.createGraphics();
         g2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 

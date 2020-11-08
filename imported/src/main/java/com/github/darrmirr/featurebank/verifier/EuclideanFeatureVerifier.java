@@ -14,7 +14,7 @@ public class EuclideanFeatureVerifier implements FeatureVerifier {
 
     @Override
     public double verify(INDArray featureSource, INDArray featureTest) {
-        var distance = Transforms.euclideanDistance(featureSource, featureTest);
+        double distance = Transforms.euclideanDistance(featureSource, featureTest);
         logger.debug("Euclidean distance : {}", distance);
         return distance;
     }

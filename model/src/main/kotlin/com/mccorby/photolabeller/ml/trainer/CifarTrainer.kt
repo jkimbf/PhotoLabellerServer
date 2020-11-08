@@ -1,20 +1,16 @@
 package com.mccorby.photolabeller.ml.trainer
 
+import com.github.darrmirr.models.InceptionResNetInputPreProcessor
 import com.github.darrmirr.models.InceptionResNetV1
 import org.datavec.image.loader.CifarLoader
 import org.deeplearning4j.datasets.iterator.impl.CifarDataSetIterator
 import org.deeplearning4j.eval.Evaluation
-import org.deeplearning4j.nn.api.OptimizationAlgorithm
-import org.deeplearning4j.nn.conf.*
-import org.deeplearning4j.nn.conf.inputs.InputType
-import org.deeplearning4j.nn.conf.layers.*
+import org.deeplearning4j.nn.conf.InputPreProcessor
+import org.deeplearning4j.nn.conf.MultiLayerConfiguration
+import org.deeplearning4j.nn.conf.NeuralNetConfiguration
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork
-import org.deeplearning4j.nn.weights.WeightInit
 import org.deeplearning4j.optimize.api.IterationListener
-import org.deeplearning4j.optimize.listeners.ScoreIterationListener
 import org.deeplearning4j.util.ModelSerializer
-import org.nd4j.linalg.activations.Activation
-import org.nd4j.linalg.lossfunctions.LossFunctions
 import java.io.File
 
 class CifarTrainer(private val config: SharedConfig) {
@@ -62,10 +58,10 @@ class CifarTrainer(private val config: SharedConfig) {
 //                .build()
 
         val shapes: LongArray = longArrayOf(16, 16, 3)
-        val modelConf = InceptionResNetV1(shapes)
+        val graphConfig = InceptionResNetV1(shapes).graphConfiguration.toJson()
+        val modelConfig = MultiLayerConfiguration.fromJson(graphConfig)
 
-        return MultiLayerNetwork((MultiLayerConfiguration)modelConf).also { it.init() }
-
+        return MultiLayerNetwork(modelConfig).also { it.init() }
     }
 
     fun train(model: MultiLayerNetwork, numSamples: Int, epochs: Int, scoreListener: IterationListener): MultiLayerNetwork {
@@ -107,3 +103,4 @@ class CifarTrainer(private val config: SharedConfig) {
         ModelSerializer.writeModel(model, File(location), true)
     }
 }
+

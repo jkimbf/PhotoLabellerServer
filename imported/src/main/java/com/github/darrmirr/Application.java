@@ -1,6 +1,7 @@
 package com.github.darrmirr;
 
 import com.github.darrmirr.featurebank.FeatureBank;
+import com.github.darrmirr.utils.FaceFeatures;
 import com.github.darrmirr.utils.ImageFace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,10 +46,10 @@ public class Application {
     private void onApplicationStartup(ApplicationStartedEvent event) throws IOException {
         logger.info("Filling feature bank : start");
         for (Resource trainImage : trainImages) {
-            var imageFile = trainImage.getFile();
-            var faceFeatures = faceDetector.getFaceFeatures(imageFile);
+            File imageFile = trainImage.getFile();
+            FaceFeatures faceFeatures = faceDetector.getFaceFeatures(imageFile);
             for (ImageFace imageFace : faceFeatures.getImageFaces()) {
-                var label = imageFile.getParentFile().getName();
+                String label = imageFile.getParentFile().getName();
                 featureBank.put(label, imageFace.getFeatureVector());
             }
         }
@@ -62,7 +63,7 @@ public class Application {
                 break;
             }
             File file = new File(inputLine);
-            var faceFeatures = faceDetector.getFaceFeatures(file);
+            FaceFeatures faceFeatures = faceDetector.getFaceFeatures(file);
             for (ImageFace imageFace : faceFeatures.getImageFaces()) {
                 featureBank.getSimilar(imageFace.getFeatureVector());
             }

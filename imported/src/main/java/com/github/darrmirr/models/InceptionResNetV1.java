@@ -46,6 +46,10 @@ public class InceptionResNetV1 implements Dl4jModel {
         }
     }
 
+    public ComputationGraphConfiguration getGraphConfiguration() {
+        return graphConfiguration;
+    }
+
     @PostConstruct
     public void init() throws IOException {
         ClassPathResource weightsResource = new ClassPathResource(WEIGHTS_PATH);

@@ -47,7 +47,7 @@ public class DataSetFeatureBank implements FeatureBank {
 
     @Override
     public INDArray get(String label) {
-        var labelIdx = dataSet == null ? -1 : dataSet.getLabelNamesList().indexOf(label);
+        int labelIdx = dataSet == null ? -1 : dataSet.getLabelNamesList().indexOf(label);
         return labelIdx == -1 ? Nd4j.empty() : dataSet.getFeatures().getRow(labelIdx);
     }
 
@@ -56,7 +56,7 @@ public class DataSetFeatureBank implements FeatureBank {
         double minVal = Double.MAX_VALUE;
         String label = "none";
         for(int i = 0; i < dataSet.numOutcomes(); i++) {
-            var featureSource = dataSet.getFeatures().getRow(i);
+            INDArray featureSource = dataSet.getFeatures().getRow(i);
             double tmpVal = featureVerifier.verify(featureSource, featureTest);
             logger.debug("similarity with {} is {}", dataSet.getLabelName(i), tmpVal);
             if(tmpVal < minVal) {

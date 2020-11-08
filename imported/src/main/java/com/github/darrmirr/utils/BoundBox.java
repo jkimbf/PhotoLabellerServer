@@ -27,10 +27,10 @@ public class BoundBox {
         if (totalBoxes.rank() == 1) {
             totalBoxes = Nd4j.expandDims(totalBoxes, 0);
         }
-        var boxesAmount = (int) totalBoxes.shape()[0];
+        int boxesAmount = (int) totalBoxes.shape()[0];
         List<BoundBox> boxes = new ArrayList<>(boxesAmount);
         for (int i = 0; i < boxesAmount; i++) {
-            var box = new BoundBox(
+            BoundBox box = new BoundBox(
                     totalBoxes.getInt(i, 0),
                     totalBoxes.getInt(i, 1),
                     totalBoxes.getInt(i, 2),

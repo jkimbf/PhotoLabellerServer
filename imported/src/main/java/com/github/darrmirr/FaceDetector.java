@@ -9,6 +9,7 @@ import com.github.darrmirr.utils.ImageUtils;
 import com.github.darrmirr.utils.Nd4jUtils;
 import org.datavec.image.loader.NativeImageLoader;
 import org.deeplearning4j.nn.graph.ComputationGraph;
+import org.nd4j.linalg.api.ndarray.INDArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,12 +64,12 @@ public class FaceDetector {
      */
 
     public List<ImageFace> detectFaces(File image) throws IOException {
-        var imageMatrix = loader.asMatrix(image);
+        INDArray imageMatrix = loader.asMatrix(image);
         return mtcnn
                 .detectFaces(imageMatrix)
                 .stream()
                 .map(boundBox -> {
-                    var imageFace = nd4jUtils.crop(boundBox, imageMatrix);
+                    INDArray imageFace = nd4jUtils.crop(boundBox, imageMatrix);
                     return new ImageFace(imageFace, boundBox);
                 })
                 .collect(toList());
@@ -83,8 +84,8 @@ public class FaceDetector {
     public List<ImageFace> extractFeatures(List<ImageFace> faces) {
         logger.info("Extract features from faces : {}", faces.size());
         faces.stream().parallel().forEach(imageFace -> {
-            var resizedFace = Nd4jUtils.imresample(imageFace.get(), model.inputHeight(), model.inputWidth());
-            var output = faceFeatureExtracter.output(resizedFace)[1];
+            INDArray resizedFace = Nd4jUtils.imresample(imageFace.get(), model.inputHeight(), model.inputWidth());
+            INDArray output = faceFeatureExtracter.output(resizedFace)[1];
             imageFace.setFeatureVector(output);
         });
         return faces;
@@ -100,7 +101,7 @@ public class FaceDetector {
 
     public FaceFeatures getFaceFeatures(File image) throws IOException {
         logger.info("start : {}", image.getName());
-        var detectedFaces = detectFaces(image);
+        List<ImageFace> detectedFaces = detectFaces(image);
 
         if(detectedFaces == null || detectedFaces.isEmpty()) {
             logger.warn("no face detected in image file : {}", image);
@@ -113,7 +114,7 @@ public class FaceDetector {
                 imageUtils.toFile(detectedFaces.get(i).getImageFace(), "jpg", i + "_" + image.getName() );
             }
         }
-        var imageFaces = extractFeatures(detectedFaces);
+        List<ImageFace> imageFaces = extractFeatures(detectedFaces);
         logger.info("end : {}", image.getName());
         return new FaceFeatures(image, imageFaces);
     }

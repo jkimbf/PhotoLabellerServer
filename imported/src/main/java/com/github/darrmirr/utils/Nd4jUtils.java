@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +36,7 @@ public class Nd4jUtils {
      * @return array with replaces values
      */
     public static INDArray maximum(final Number number2put, final INDArray srcArray) {
-        var array2Put = Nd4j.zerosLike(srcArray).addi(number2put);
+        INDArray array2Put = Nd4j.zerosLike(srcArray).addi(number2put);
         return maximum(array2Put, srcArray);
     }
 
@@ -50,7 +51,7 @@ public class Nd4jUtils {
      * @return array with replaces values
      */
     public static INDArray maximum(final INDArray array2Put, final INDArray srcArray) {
-        var arrayMask = srcArray.gt(array2Put);
+        INDArray arrayMask = srcArray.gt(array2Put);
         return srcArray.putWhereWithMask(arrayMask, array2Put);
     }
 
@@ -65,7 +66,7 @@ public class Nd4jUtils {
      * @return array with replaces values
      */
     public static INDArray minimum(final Number number2put, final INDArray srcArray) {
-        var array2Put = Nd4j.zerosLike(srcArray).addi(number2put);
+        INDArray array2Put = Nd4j.zerosLike(srcArray).addi(number2put);
         return minimum(array2Put, srcArray);
     }
 
@@ -80,7 +81,7 @@ public class Nd4jUtils {
      * @return array with replaces values
      */
     public static INDArray minimum(final INDArray array2Put, final INDArray srcArray) {
-        var arrayMask = srcArray.lt(array2Put);
+        INDArray arrayMask = srcArray.lt(array2Put);
         return srcArray.putWhereWithMask(arrayMask, array2Put);
     }
 
@@ -94,11 +95,11 @@ public class Nd4jUtils {
     public static INDArray findFitIndexes(INDArray array, final Condition condition) {
         assert array.rank() == 2;
 
-        var indexesList = new ArrayList<INDArray>();
+        ArrayList<INDArray> indexesList = new ArrayList<INDArray>();
         Shape.iterate(array, coord -> {
             if (condition.apply(array.getDouble(coord[0]))) {
-                var indexArray = Nd4j
-                        .create(new double[][] { {coord[0][0], coord[0][1] }})
+                INDArray indexArray = Nd4j
+                        .create(new double[][]{{coord[0][0], coord[0][1]}})
                         .transposei();
                 indexesList.add(indexArray);
             }
@@ -106,7 +107,7 @@ public class Nd4jUtils {
         if (indexesList.isEmpty()) {
             return null;
         }
-        var indexesArray = Nd4j.hstack(indexesList);
+        INDArray indexesArray = Nd4j.hstack(indexesList);
         return array.rows() == 1 ? indexesArray.getRow(1) : indexesArray;
     }
 
@@ -118,7 +119,7 @@ public class Nd4jUtils {
      * @param fileName file path included file name
      */
     public static void toFile(INDArray indArray, String fileName) {
-        try(OutputStream outputStream = Files.newOutputStream(Path.of(fileName))){
+        try(OutputStream outputStream = Files.newOutputStream(Paths.get(fileName))){
             Nd4j.write(outputStream, indArray);
         } catch (IOException e) {
             logger.error("error to save indArray", e);
@@ -129,7 +130,7 @@ public class Nd4jUtils {
     public static INDArray scale(INDArray imageMatrix, int scaleSize) {
         long[] shape = imageMatrix.shape();
         if (shape[2] > scaleSize || shape[3] > scaleSize) {
-            var scale = shape[2] > shape[3] ? (double) scaleSize / shape[2] : (double) scaleSize / shape[3];
+            double scale = shape[2] > shape[3] ? (double) scaleSize / shape[2] : (double) scaleSize / shape[3];
             return Nd4jUtils.imresample(imageMatrix, (int) Math.ceil(shape[2] * scale), (int) Math.ceil(shape[3] * scale));
         }
         return imageMatrix;
@@ -165,10 +166,10 @@ public class Nd4jUtils {
     }
 
     public INDArray crop(BoundBox box, INDArray image) {
-        var x1 = Math.max(box.x1, 0);
-        var x2 = Math.max(box.x2, 0);
-        var y1 = Math.max(box.y1, 0);
-        var y2 = Math.max(box.y2, 0);
+        int x1 = Math.max(box.x1, 0);
+        int x2 = Math.max(box.x2, 0);
+        int y1 = Math.max(box.y1, 0);
+        int y2 = Math.max(box.y2, 0);
         return image.get(all(), all(), interval(y1, y2), interval(x1, x2)).dup();
     }
 }

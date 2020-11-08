@@ -14,7 +14,7 @@ public class CosineFeatureVerifier implements FeatureVerifier {
 
     @Override
     public double verify(INDArray featureSource, INDArray featureTest) {
-        var distance = Transforms.cosineDistance(featureSource, featureTest);
+        double distance = Transforms.cosineDistance(featureSource, featureTest);
         logger.debug("Cosine distance : {}", distance);
         return distance;
     }
